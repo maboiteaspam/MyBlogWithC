@@ -1,0 +1,39 @@
+
+body{
+    padding: 0;
+    margin: 0;
+    font-family: 'Open Sans Light', sans-serif;
+}
+.template-container{
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+    height: 100%;
+}
+.body-header{
+    float: left;
+    background-color: aliceblue;
+    z-index: 3;
+    height: 80px;
+    width: 100%;
+    text-align: center;
+}
+.body-content{
+    float: left;
+    width: 100%;
+    background-color: aliceblue;
+    z-index: 2;
+}
+
+.right-bar{
+    display: inline-block;
+    width: 28%;
+    margin-left: 2%;
+}
+.body-footer{
+    float: left;
+    z-index: 0;
+    height: 80px;
+    width: 100%;
+    text-align: center;
+}
