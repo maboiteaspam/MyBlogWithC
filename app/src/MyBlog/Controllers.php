@@ -179,6 +179,21 @@ class Controllers{
             return $app->json(getFormErrors($form), 500);
         };
     }
+
+    public function formDemo() {
+        return function (Application $app, Request $request) {
+            $response = new Response();
+
+            FileLayout::transform()
+                ->setHelpers($app['modern.layout.helpers'])
+                ->setStore($app['modern.layout.store'])
+                ->setLayout($app['layout'])
+                ->importFile("MyBlog:/formDemo.yml")
+            ;
+
+            return $app['layout.responder']->respond($app['layout'], $request, $response);
+        };
+    }
 }
 
 function getFormErrors(Form $form)

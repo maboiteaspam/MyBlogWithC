@@ -1,0 +1,30 @@
+---
+
+meta:
+  id: my_blog_home
+  description: |
+    Layout for MyBlog Homepage website.
+
+structure:
+  - import: HTML:/1-column.yml
+    body_content:
+      update_meta:
+        from: home
+      set_template: MyBlog:/formDemo.php
+      create_form:
+        name: myForm
+        children:
+          email:
+            type: email
+            attr:
+              value: some@email.com
+          save:
+            type: submit
+
+      inject_jquery:
+        version: 2.1.3
+        target: page_footer_js
+  - show_dashboard:
+      - time_travel
+      - structure_visualizer
+      - stats

@@ -61,6 +61,10 @@ class ControllersProvider implements
             $app['myblog.controllers']->postComment()
         )->bind ('blog_entry.add_comment');
 
+        $controllers->get( '/formDemo',
+            $app['myblog.controllers']->formDemo()
+        )->bind ('form.demo');
+
         return $controllers;
     }
 }
