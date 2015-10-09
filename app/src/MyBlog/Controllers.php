@@ -2,7 +2,6 @@
 namespace MyBlog;
 
 use C\HTTP\RequestProxy;
-use C\Layout\TransformsInterface;
 use Silex\Application;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,13 +42,17 @@ class Controllers{
             $commentRepo = $app[$this->commentRepo];
             $response = new Response();
 
-            return FileLayout::transform($app)
+            FileLayout::transform()
+                ->setHelpers($app['modern.layout.helpers'])
+                ->setStore($app['modern.layout.store'])
+                ->setLayout($app['layout'])
                 ->importFile("MyBlog:/home.yml")
-                ->then(function (TransformsInterface $transform) use ($app, $entryRepo, $commentRepo) {
+                ->then(function () use ($app, $entryRepo, $commentRepo) {
                     /* @var $requestData \C\HTTP\RequestProxy */
                     $requestData = new RequestProxy($app['request']);
                     $listEntryBy = 5;
-                    Transforms::transform($app)
+                    Transforms::transform()
+                        ->setLayout($app['layout'])
                         ->updateData('body_content',[
                             'entries'   => $entryRepo
                                 ->tagable( $entryRepo->tager()->lastUpdateDate() )
@@ -65,9 +68,9 @@ class Controllers{
                             'count'         => $entryRepo->tagable()->countAll(),
                             'by'            => $listEntryBy,
                         ]);
+                });
 
-                })->respond($request, $response)
-            ;
+            return $app['layout.responder']->respond($app['layout'], $request, $response);
         };
     }
 
@@ -79,12 +82,16 @@ class Controllers{
             $commentRepo = $app[$this->commentRepo];
             $response = new Response();
 
-            return FileLayout::transform($app)
+            FileLayout::transform()
+                ->setHelpers($app['modern.layout.helpers'])
+                ->setStore($app['modern.layout.store'])
+                ->setLayout($app['layout'])
                 ->importFile("MyBlog:/detail.yml")
                 ->forDevice('desktop')
 
-                ->then(function (TransformsInterface $transform) use ($app, $id, $entryRepo, $commentRepo) {
-                    Transforms::transform($app)
+                ->then(function () use ($app, $id, $entryRepo, $commentRepo) {
+                    Transforms::transform()
+                        ->setLayout($app['layout'])
                         ->updateData('body_content',[
                             'entry' => $entryRepo
                                     ->tagable( $entryRepo->tager()->byId($id) )
@@ -102,16 +109,17 @@ class Controllers{
                                 ->mostRecent([$id]),
                         ]);
 
-                })->then(function (TransformsInterface $transform) use($app, $request) {
+                })->then(function () use($app, $request) {
                     /* @var $generator \Symfony\Component\Routing\Generator\UrlGenerator */
                     $generator = $app["url_generator"];
 
-                    PunchHole::transform($app)
+                    PunchHole::transform()
+                        ->setLayout($app['layout'])
                         ->esify('blog_detail_comments', [
                             'url'   => $generator->generate($request->get('_route'), $request->get('_route_params')),
                         ]);
 
-                })->then(function (TransformsInterface $transform) use($app, $request, $postCommentUrl, $id) {
+                })->then(function () use($app, $request, $postCommentUrl, $id) {
                     /* @var $generator \Symfony\Component\Routing\Generator\UrlGenerator */
                     $generator = $app["url_generator"];
 
@@ -126,15 +134,17 @@ class Controllers{
 
                     $form->handleRequest($request);
 
-                    jQuery::transform($app)
+                    jQuery::transform()
+                        ->setLayout($app['layout'])
                         ->ajaxify('blog_form_comments', [
                             'url'   => $generator->generate($request->get('_route'), $request->get('_route_params')),
                         ])->updateData('blog_form_comments', [
                             'form' => FormBuilder::createView($form),
                         ]);
 
-                })->respond($request, $response)
-            ;
+                });
+
+            return $app['layout.responder']->respond($app['layout'], $request, $response);
         };
     }
 

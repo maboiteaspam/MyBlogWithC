@@ -1,35 +1,37 @@
 {
-    "prefer-stable": true,
-    "minimum-stability": "dev",
-    "name": "my/blog",
-    "description": "myblog",
-    "require": {
-        "c/bootstrap": "dev-master",
-        "c/blog": "dev-master",
-        "c/blogdata": "dev-master"
+  "prefer-stable": true,
+  "minimum-stability": "dev",
+  "name": "my/blog",
+  "description": "myblog",
+  "require": {
+    "c/bootstrap": "dev-master",
+    "c/blog": "dev-master",
+    "c/blogdata": "dev-master",
+    "c/foundation": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "MyBlog\\":
+      "app/src/MyBlog"
+    }
+  },
+  "license": "WTF",
+  "repositories": [
+    {
+      "type": "path",
+      "url": "..\\C\\Foundation"
     },
-    "autoload": {
-        "psr-4": {
-            "MyBlog\\": "app/src/MyBlog"
-        }
+    {
+      "type": "vcs",
+      "url": "..\\C\\Blog"
     },
-    "license": "WTF",
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../C/Bootstrap/"
-        },
-        {
-            "type": "path",
-            "url": "../C/Blog/"
-        },
-        {
-            "type": "path",
-            "url": "../C/Foundation/"
-        },
-        {
-            "type": "path",
-            "url": "../C/BlogData/"
-        }
-    ]
+    {
+      "type": "vcs",
+      "url": "..\\C\\BlogData"
+    },
+    {
+      "type": "vcs",
+      "url": "..\\C\\Bootstrap"
+    }
+  ]
 }
