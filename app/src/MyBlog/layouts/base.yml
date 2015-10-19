@@ -9,7 +9,6 @@ structure:
   - import: HTML:/1-column.yml
   - body_top:
       set_template: MyBlog:/top.php
-      add_intl: MyBlog:/en.yml
       set_default_data:
         logo: 'ddsfdsf'
     body:
