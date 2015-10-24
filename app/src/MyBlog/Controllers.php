@@ -11,7 +11,7 @@ use C\ModernApp\File\Transforms as FileLayout;
 use C\Esi\Transforms as PunchHole;
 use C\ModernApp\jQuery\Transforms as jQuery;
 
-use C\Layout\Transforms as Transforms;
+use C\Layout\Transforms\Transforms as Transforms;
 use \C\Blog\CommentForm as MyCommentForm;
 use \C\Form\FormBuilder;
 
