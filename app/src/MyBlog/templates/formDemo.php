@@ -1,6 +1,6 @@
 <?php
 /* @var $this \C\View\ConcreteContext */
-/* @var $form \Symfony\Component\Form\FormView */
+/* @var $myForm \Symfony\Component\Form\FormView */
 ?>
 
 Some data..
