@@ -50,8 +50,12 @@ return [
             'driver'    => 'include',
             'cache_dir' => __DIR__ . '/run/modern-layout/',
         ],
+        'form-fs-store'=>[
+            'driver'    => 'include',
+            'cache_dir' => __DIR__ . '/run/form-fs/',
+        ],
     ],
-    'assets.concat'     => !false,
+    'assets.concat'     => false,
     'assets.build_dir'  => 'www/run',
     'assets.www_dir'    => '/run',
     'assets.patterns' => [
