@@ -1,19 +1,16 @@
 <?php
 namespace MyBlog;
 
+use C\Form\FormErrorHelper;
 use C\HTTP\RequestProxy;
+use C\Repository\RepositoryGhoster;
 use Silex\Application;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 use C\ModernApp\File\Transforms as FileLayout;
-use C\Esi\Transforms as PunchHole;
-use C\ModernApp\jQuery\Transforms as jQuery;
-
-use C\Layout\Transforms\Transforms as Transforms;
 use \C\Blog\CommentForm as MyCommentForm;
-use \C\Form\FormBuilder;
 
 class Controllers{
 
@@ -36,39 +33,52 @@ class Controllers{
 
     public function home() {
         return function (Application $app, Request $request) {
-            /* @var $entryRepo \C\BlogData\EntryRepositoryInterface */
-            $entryRepo = $app[$this->entryRepo];
-            /* @var $commentRepo \C\BlogData\CommentRepositoryInterface */
-            $commentRepo = $app[$this->commentRepo];
-            $response = new Response();
 
-            FileLayout::transform()
-                ->setHelpers($app['modern.layout.helpers'])
-                ->setStore($app['modern.layout.store'])
-                ->setLayout($app['layout'])
+            $entriesTag
+                = new RepositoryGhoster ($app[$this->entryRepo]);
+            /* @var $entriesTag     \C\BlogData\Eloquent\EntryRepository */
+
+            $entries
+                = new RepositoryGhoster ($app[$this->entryRepo],
+                $entriesTag->lastUpdateDate()->first() );
+            /* @var $entries        \C\BlogData\Eloquent\EntryRepository */
+
+            $entryCount
+                = new RepositoryGhoster ($app[$this->entryRepo]);
+            /* @var $entryCount     \C\BlogData\Eloquent\EntryRepository */
+
+
+
+            $commentsTag
+                = new RepositoryGhoster ($app[$this->commentRepo]);
+            /* @var $commentsTag    \C\BlogData\Eloquent\CommentRepository */
+
+            $comments
+                = new RepositoryGhoster ($app[$this->commentRepo],
+                $commentsTag->lastUpdateDate()->first() );
+            /* @var $comments       \C\BlogData\Eloquent\CommentRepository */
+
+
+            $requestData    = new RequestProxy($app['request']);
+            $listEntryBy    = 5;
+
+            $response       = new Response();
+
+            $fileTransform  = $app['layout.file.transform']($app);
+            /* @var $fileTransform  \C\ModernApp\File\Transforms */
+
+            $fileTransform
                 ->importFile("MyBlog:/home.yml")
-                ->then(function () use ($app, $entryRepo, $commentRepo) {
-                    /* @var $requestData \C\HTTP\RequestProxy */
-                    $requestData = new RequestProxy($app['request']);
-                    $listEntryBy = 5;
-                    Transforms::transform()
-                        ->setLayout($app['layout'])
-                        ->updateData('body_content',[
-                            'entries'   => $entryRepo
-                                ->tagable( $entryRepo->tager()->lastUpdateDate() )
-                                ->mostRecent($requestData->get('page'), $listEntryBy)
-                        ])
-                        ->updateData('rb_latest_comments',[
-                            'comments'  => $commentRepo
-                                ->tagable( $commentRepo->tager()->lastUpdateDate() )
-                                ->mostRecent()
-
-                        ])
-                        ->updateData('blog-entries-pagination', [
-                            'count'         => $entryRepo->tagable()->countAll(),
-                            'by'            => $listEntryBy,
-                        ]);
-                });
+                ->updateData('body_content',[
+                    'entries'   => $entries->mostRecent ($requestData->get('page'), $listEntryBy)->get()
+                ])
+                ->updateData('rb_latest_comments',[
+                    'comments'  => $comments->mostRecent()->get()
+                ])
+                ->updateData('blog-entries-pagination', [
+                    'count'     => $entryCount->countAll(),
+                    'by'        => $listEntryBy,
+                ]);;
 
             return $app['layout.responder']->respond($app['layout'], $request, $response);
         };
@@ -76,73 +86,51 @@ class Controllers{
 
     public function detail($postCommentUrl) {
         return function (Application $app, Request $request, $id) use($postCommentUrl) {
-            /* @var $entryRepo \C\BlogData\EntryRepositoryInterface */
-            $entryRepo = $app[$this->entryRepo];
-            /* @var $commentRepo \C\BlogData\CommentRepositoryInterface */
-            $commentRepo = $app[$this->commentRepo];
-            $response = new Response();
 
-            FileLayout::transform()
-                ->setHelpers($app['modern.layout.helpers'])
-                ->setStore($app['modern.layout.store'])
-                ->setLayout($app['layout'])
+            $entry
+                = new RepositoryGhoster($app[$this->entryRepo]);
+            /* @var $entry                  \C\BlogData\Eloquent\EntryRepository */
+
+
+            $commentsByEntryTag
+                = new RepositoryGhoster($app[$this->commentRepo]);
+            /* @var $commentsByEntryTag     \C\BlogData\Eloquent\CommentRepository */
+
+            $commentsByEntry
+                = new RepositoryGhoster($app[$this->commentRepo],
+                $commentsByEntryTag->lastUpdatedByEntryId($id)->first());
+            /* @var $commentsByEntry        \C\BlogData\Eloquent\CommentRepository */
+
+
+            $mostRecentCommentsTag
+                = new RepositoryGhoster($app[$this->commentRepo]);
+            /* @var $mostRecentCommentsTag  \C\BlogData\Eloquent\CommentRepository */
+
+            $mostRecentComments
+                = new RepositoryGhoster($app[$this->commentRepo],
+                $mostRecentCommentsTag->lastUpdatedByEntryId($id)->first());
+            /* @var $mostRecentComments     \C\BlogData\Eloquent\CommentRepository */
+
+
+            $response       = new Response();
+
+            $fileTransform  = $app['layout.file.transform']($app);
+            /* @var $fileTransform          \C\ModernApp\File\Transforms */
+
+            $fileTransform
                 ->importFile("MyBlog:/detail.yml")
+
                 ->forDevice('desktop')
-
-                ->then(function () use ($app, $id, $entryRepo, $commentRepo) {
-                    Transforms::transform()
-                        ->setLayout($app['layout'])
-                        ->updateData('body_content',[
-                            'entry' => $entryRepo
-                                    ->tagable( $entryRepo->tager()->byId($id) )
-                                    ->byId($id)
-                        ])
-                        ->updateData('blog_detail_comments',[
-                            'comments'  => $commentRepo
-                                ->tagable( $commentRepo->tager()->lastUpdatedByEntryId($id) )
-                                ->byEntryId($id)
-
-                        ])
-                        ->updateData('rb_latest_comments', [
-                            'comments'  => $commentRepo
-                                ->tagable( $commentRepo->tager()->mostRecent([$id]) )
-                                ->mostRecent([$id]),
-                        ]);
-
-                })->then(function () use($app, $request) {
-                    /* @var $generator \Symfony\Component\Routing\Generator\UrlGenerator */
-                    $generator = $app["url_generator"];
-
-                    PunchHole::transform()
-                        ->setLayout($app['layout'])
-                        ->esify('blog_detail_comments', [
-                            'url'   => $generator->generate($request->get('_route'), $request->get('_route_params')),
-                        ]);
-
-                })->then(function () use($app, $request, $postCommentUrl, $id) {
-                    /* @var $generator \Symfony\Component\Routing\Generator\UrlGenerator */
-                    $generator = $app["url_generator"];
-
-                    $commentForm = new MyCommentForm();
-
-                    /* @var $form \Symfony\Component\Form\Form */
-                    $form = $app['form.factory']
-                        ->createBuilder($commentForm)
-                        ->setAction($generator->generate($postCommentUrl, ['id'=>$id]))
-                        ->setMethod('POST')
-                        ->getForm();
-
-                    $form->handleRequest($request);
-
-                    jQuery::transform()
-                        ->setLayout($app['layout'])
-                        ->ajaxify('blog_form_comments', [
-                            'url'   => $generator->generate($request->get('_route'), $request->get('_route_params')),
-                        ])->updateData('blog_form_comments', [
-                            'form' => FormBuilder::createView($form),
-                        ]);
-
-                });
+                ->updateData('body_content',[
+                    'entry' => $entry->byId($id)->first()
+                ])
+                //@todo update form action attr
+                ->updateData('blog_detail_comments',[
+                    'comments'  => $commentsByEntry->byEntryId($id)->get()
+                ])
+                ->updateData('rb_latest_comments', [
+                    'comments'  => $mostRecentComments->mostRecent([$id])->get()
+                ]);
 
             return $app['layout.responder']->respond($app['layout'], $request, $response);
         };
@@ -155,28 +143,18 @@ class Controllers{
                 ->createBuilder($comment)
                 ->getForm();
 
-            /* @var $form \Symfony\Component\Form\Form*/
+            /* @var $form               \Symfony\Component\Form\Form*/
             $form->handleRequest($request);
-
-
 
             if ($form->isValid()) {
                 $data = $form->getData();
                 $data['blog_entry_id'] = $id;
-                /* @var $commentRepo \C\BlogData\CommentRepositoryInterface */
-                $commentRepo = $app[$this->commentRepo];
-                $commentRepo->insert($data);
+                $app[$this->commentRepo]->insert($data);
                 return $app->json($data);
             }
 
-//            $errors = $app['validator']->validate($form);
-//            dump($form->getData());
-//            dump($form->isValid());
-//            dump($form->getErrors()->getForm());
-//            dump(getFormErrors($form));
-//            dump($comment);
-
-            return $app->json(getFormErrors($form), 500);
+            $helper = new FormErrorHelper();
+            return json_encode($helper->getFormErrors($form));
         };
     }
 
@@ -194,25 +172,4 @@ class Controllers{
             return $app['layout.responder']->respond($app['layout'], $request, $response);
         };
     }
-}
-
-function getFormErrors(Form $form)
-{
-    $errors = array();
-
-    // Global
-    foreach ($form->getErrors() as $error) {
-        $errors[$form->getName()][] = $error->getMessage();
-    }
-
-    // Fields
-    foreach ($form as $child /** @var Form $child */) {
-        if (!$child->isValid()) {
-            foreach ($child->getErrors() as $error) {
-                $errors[$child->getName()][] = $error->getMessage();
-            }
-        }
-    }
-
-    return $errors;
 }
