@@ -6,11 +6,17 @@ meta:
     Base layout for MyBlog website.
 
 structure:
+  # usea standard structure
   - import: HTML:/1-column.yml
+  - import: jQuery:/register.yml
+
+  # configure the top with a configurable logo
   - body_top:
       set_template: MyBlog:/top.php
       set_default_data:
         logo: 'ddsfdsf'
+
+  # configure the assets of the blog on body
     body:
       add_assets:
         template_head_css:
@@ -18,12 +24,14 @@ structure:
           - MyBlog:/template.css
         page_footer_js:
           - MyBlog:/index.js
-      inject_jquery:
-        version: 2.1.3
-        target: page_footer_js
+      require: ["jquery:2.x || 1.x"]
+
+    # for demo, add an extra footer
     extra_footer:
       insert_after: body_footer
       body: some
+
+  # configure and display dashboard
   - show_dashboard:
       - time_travel
       - structure_visualizer
