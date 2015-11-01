@@ -7,6 +7,6 @@
 </div>
 <?php $this->inlineTo('last'); ?>
 <script type="text/javascript">
-    some('rrr');
+    console.log('rrr');
 </script>
 <?php $this->endInline(); ?>
