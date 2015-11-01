@@ -1,0 +1,36 @@
+name: commentForm
+type: \C\Blog\CommentForm
+attr:
+    # This attribute is useful to disable html5 validation and thus ease testing of backend validation
+    novalidate: novalidate
+    id: myCommentForm
+
+# Declare the members of the form under children key.
+children:
+
+  # An email field
+  email:
+    type: email
+    validation:
+      - Email: ~
+    options: {label: Your email, data: john@doe.com}
+
+  # A text field
+  name:
+    type: text
+    validation:
+      - NotBlank: ~
+    options: {label: Your name, data: John Doe!}
+
+  # A textarea field
+  comment:
+    type: textarea
+    validation:
+      - NotBlank: ~
+    options: {label: Your comment, data: Hi!...}
+
+  # A submit button
+  subscribe:
+    type: submit
+    options: {label: Post}
+
