@@ -1,8 +1,12 @@
 <?php
+/* @var $bootHelper \C\Bootstrap\Common */
 $bootHelper = require("bootstrap.php");
-$app = $bootHelper->app;
 
+// boot an app
+$app = $bootHelper->boot();
+
+// ...then mount the web modules
 $app->mount('/', $myBlogController);
-//$app->mount('/form', $formDemo);
 
-$app->run();
+// run the web instance
+$bootHelper->run();

@@ -18,17 +18,19 @@ require 'vendor/autoload.php';
 use \C\Bootstrap\Common as BootHelper;
 $bootHelper = new BootHelper();
 
-$app = $bootHelper->register($runtime, $configTokens);
+$bootHelper->setup($runtime, $configTokens);
 
-$app->register(new \C\BlogData\ServiceProvider());
 $blogController = new C\Blog\ControllersProvider();
 $myBlogController = new \MyBlog\ControllersProvider();
-$app->register($blogController);
-$app->register($myBlogController);
+
+$bootHelper->register(new \C\Provider\CapsuleServiceProvider());
+$bootHelper->register(new \C\BlogData\ServiceProvider());
+$bootHelper->register($blogController);
+$bootHelper->register($myBlogController);
 
 
 //$formDemo = new \C\FormDemo\ControllersProvider();
-//$app->register($formDemo);
+//$bootHelper->register($formDemo);
 
 
 return $bootHelper;
