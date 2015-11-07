@@ -18,20 +18,24 @@
   "license": "WTF",
   "repositories": [
     {
-      "type": "path",
-      "url": "..\\C\\Foundation"
+      "type": "vcs",
+      "url": "../C/Foundation"
     },
     {
       "type": "vcs",
-      "url": "..\\C\\Blog"
+      "url": "../C/Blog"
     },
     {
       "type": "vcs",
-      "url": "..\\C\\BlogData"
+      "url": "../C/BlogData"
     },
     {
       "type": "vcs",
-      "url": "..\\C\\Bootstrap"
+      "url": "../C/Bootstrap"
+    },
+    {
+      "type": "vcs",
+      "url": "../StreamObjectTransform"
     }
   ]
 }
