@@ -6,35 +6,45 @@
   "require": {
     "c/bootstrap": "dev-master",
     "c/blog": "dev-master",
+    "c/eloquent": "dev-master",
     "c/blogdata": "dev-master",
     "c/foundation": "dev-master"
   },
   "autoload": {
     "psr-4": {
-      "MyBlog\\":
-      "app/src/MyBlog"
+      "MyBlog\\": "app/src/MyBlog"
     }
   },
   "license": "WTF",
   "repositories": [
     {
-      "type": "vcs",
+      "link": true,
+      "type": "path",
       "url": "../C/Foundation"
     },
     {
-      "type": "vcs",
+      "link": true,
+      "type": "path",
       "url": "../C/Blog"
     },
     {
-      "type": "vcs",
+      "link": true,
+      "type": "path",
       "url": "../C/BlogData"
     },
     {
-      "type": "vcs",
+      "link": true,
+      "type": "path",
       "url": "../C/Bootstrap"
     },
     {
-      "type": "vcs",
+      "link": true,
+      "type": "path",
+      "url": "../C/c-eloquent"
+    },
+    {
+      "link": true,
+      "type": "path",
       "url": "../StreamObjectTransform"
     }
   ]

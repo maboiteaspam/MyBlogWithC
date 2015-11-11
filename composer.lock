@@ -4,16 +4,17 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5032f01867bfa7ea5430a04dca321e75",
-    "content-hash": "1bdee5c53e0f0fc9603bce78db94f302",
+    "hash": "2b8bbb2a6c1d25c7888fd0c1ab452df2",
+    "content-hash": "98e6664fb570c7f90b28f8600cdfa0cb",
     "packages": [
         {
             "name": "c/blog",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "../C/Blog",
-                "reference": "a177ea9de02818be6fb20e1df2064b9d4c47c9e5"
+            "dist": {
+                "type": "path",
+                "url": "../C/Blog/",
+                "reference": "a177ea9de02818be6fb20e1df2064b9d4c47c9e5",
+                "shasum": null
             },
             "require": {
                 "silex/silex": "~1.3",
@@ -25,39 +26,40 @@
                 "psr-4": {
                     "C\\Blog\\": "src/C"
                 }
-            },
-            "time": "2015-11-01 05:51:56"
+            }
         },
         {
             "name": "c/blogdata",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "../C/BlogData",
-                "reference": "17350cdcff023f0314e5a0798b3101de37d575dd"
+            "dist": {
+                "type": "path",
+                "url": "../C/BlogData/",
+                "reference": "9b2c7b65fac9fcb8b675ad4b48610d693502e389",
+                "shasum": null
             },
             "require": {
+                "c/eloquent": "dev-master",
                 "c/foundation": "dev-master",
-                "illuminate/database": "^5.1",
-                "illuminate/events": "^5.1",
+                "erusev/parsedown": "dev-master",
                 "joshtronic/php-loremipsum": "^1.0",
-                "silex/silex": "~1.3"
+                "silex/silex": "~1.3",
+                "symfony/var-dumper": "^2.7"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "C\\BlogData\\": "src/C"
                 }
-            },
-            "time": "2015-11-07 13:34:54"
+            }
         },
         {
             "name": "c/bootstrap",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "../C/Bootstrap",
-                "reference": "4c310a2cba55d4bb87fac1590fcf7ae522517034"
+            "dist": {
+                "type": "path",
+                "url": "../C/Bootstrap/",
+                "reference": "4c310a2cba55d4bb87fac1590fcf7ae522517034",
+                "shasum": null
             },
             "require": {
                 "c/foundation": "dev-master",
@@ -72,22 +74,42 @@
             "license": [
                 "WTF"
             ],
-            "description": "bootstrap c",
-            "time": "2015-11-05 14:41:04"
+            "description": "bootstrap c"
+        },
+        {
+            "name": "c/eloquent",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../C/c-eloquent/",
+                "reference": "c2a0d675b19057a7a5c7a522fe736f5858f01682",
+                "shasum": null
+            },
+            "require": {
+                "c/foundation": "dev-master",
+                "illuminate/database": "^5.1",
+                "illuminate/events": "^5.1",
+                "silex/silex": "~1.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "C\\Eloquent\\": "src/"
+                }
+            }
         },
         {
             "name": "c/foundation",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "../C/Foundation",
-                "reference": "6f7bd738ab122b2971b2b0717129fb8e40f57473"
+            "dist": {
+                "type": "path",
+                "url": "../C/Foundation/",
+                "reference": "1341dbcba6e7258f7009ec30c13f14b17af93f4e",
+                "shasum": null
             },
             "require": {
                 "c/stream-object-transform": "dev-master",
                 "igorw/config-service-provider": "^1.2",
-                "illuminate/database": "^5.1",
-                "illuminate/events": "^5.1",
                 "jbinfo/mobile-detect-service-provider": "^1.1",
                 "monolog/monolog": "^1.17",
                 "moust/silex-cache": "1.0.*@dev",
@@ -106,16 +128,16 @@
                 "psr-4": {
                     "C\\": "src/C"
                 }
-            },
-            "time": "2015-11-07 13:52:09"
+            }
         },
         {
             "name": "c/stream-object-transform",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "../StreamObjectTransform",
-                "reference": "f7023475374d9fc584cf41959edff9f03995b3dc"
+            "dist": {
+                "type": "path",
+                "url": "../StreamObjectTransform/",
+                "reference": "65d32e071f6addbde6aeac0f2108b41986d12cdb",
+                "shasum": null
             },
             "require": {
                 "joshtronic/php-loremipsum": "^1.0"
@@ -125,8 +147,7 @@
                 "psr-4": {
                     "C\\": "src/C"
                 }
-            },
-            "time": "2015-11-07 13:46:06"
+            }
         },
         {
             "name": "danielstjules/stringy",
@@ -250,6 +271,45 @@
                 "string"
             ],
             "time": "2015-11-06 14:35:42"
+        },
+        {
+            "name": "erusev/parsedown",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/erusev/parsedown.git",
+                "reference": "c046a6b6469f7ffc99ccfdc96dbe63b3587f4eca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/c046a6b6469f7ffc99ccfdc96dbe63b3587f4eca",
+                "reference": "c046a6b6469f7ffc99ccfdc96dbe63b3587f4eca",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Parsedown": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Emanuil Rusev",
+                    "email": "hello@erusev.com",
+                    "homepage": "http://erusev.com"
+                }
+            ],
+            "description": "Parser for Markdown.",
+            "homepage": "http://parsedown.org",
+            "keywords": [
+                "markdown",
+                "parser"
+            ],
+            "time": "2015-10-31 18:08:48"
         },
         {
             "name": "igorw/config-service-provider",
@@ -2256,25 +2316,25 @@
         },
         {
             "name": "wa72/htmlpagedom",
-            "version": "v1.2.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wasinger/htmlpagedom.git",
-                "reference": "e90d581d5fa5037691fe3953bbab77a0abae286e"
+                "reference": "4f05d7f83a90b73ba1cd0c5891dec83e92dc59ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wasinger/htmlpagedom/zipball/e90d581d5fa5037691fe3953bbab77a0abae286e",
-                "reference": "e90d581d5fa5037691fe3953bbab77a0abae286e",
+                "url": "https://api.github.com/repos/wasinger/htmlpagedom/zipball/4f05d7f83a90b73ba1cd0c5891dec83e92dc59ca",
+                "reference": "4f05d7f83a90b73ba1cd0c5891dec83e92dc59ca",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0",
-                "symfony/css-selector": ">=2.6,<2.8",
-                "symfony/dom-crawler": ">=2.6,<2.8"
+                "symfony/css-selector": ">=2.3,<2.8",
+                "symfony/dom-crawler": ">=2.3,<2.8"
             },
             "require-dev": {
-                "wa72/html-pretty-min": "^0.1.1"
+                "wa72/html-pretty-min": "^0.1.2"
             },
             "suggest": {
                 "wa72/html-pretty-min": "Minify or indent HTML documents"
@@ -2308,7 +2368,7 @@
                 "dom",
                 "html"
             ],
-            "time": "2015-11-06 20:04:47"
+            "time": "2015-11-09 15:21:02"
         }
     ],
     "packages-dev": [],
@@ -2317,6 +2377,7 @@
     "stability-flags": {
         "c/bootstrap": 20,
         "c/blog": 20,
+        "c/eloquent": 20,
         "c/blogdata": 20,
         "c/foundation": 20
     },

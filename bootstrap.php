@@ -23,7 +23,7 @@ $bootHelper->setup($runtime, $configTokens);
 $blogController = new C\Blog\ControllersProvider();
 $myBlogController = new \MyBlog\ControllersProvider();
 
-$bootHelper->register(new \C\Provider\CapsuleServiceProvider());
+$bootHelper->register(new \C\Eloquent\ServiceProvider());
 $bootHelper->register(new \C\BlogData\ServiceProvider());
 $bootHelper->register($blogController);
 $bootHelper->register($myBlogController);
