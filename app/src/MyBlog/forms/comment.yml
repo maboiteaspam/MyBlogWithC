@@ -1,7 +1,8 @@
-name: commentForm
+# name: is set by the underlying type (CommentForm)
 type: \C\Blog\CommentForm
 attr:
-    # This attribute is useful to disable html5 validation and thus ease testing of backend validation
+    # This attribute is useful to disable
+    # html5 validation and thus ease testing of backend validation
     novalidate: novalidate
     id: myCommentForm
 
