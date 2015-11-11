@@ -47,26 +47,36 @@ class ControllersProvider implements
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];
+        $blogController = $app['myblog.controllers'];
+        /* @var $blogController Controllers */
 
         $controllers->get( '/',
-            $app['myblog.controllers']->home()
-        )->bind ('home');
+            $blogController->home())
+            ->bind ('home');
 
-        $controllers->get( '/blog/{id}',
-            $app['myblog.controllers']->detail('blog_entry.add_comment')
-        )->bind ('blog_entry');
+        $controllers
+            ->get( '/blog/{id}',
+                $blogController->detail(
+                    $postCommentUrl = 'blog_entry.add_comment',
+                    $postCommentUrlParams=['id'] ))
+            ->bind ('blog_entry');
 
-        $controllers->get( '/blog/{id}/blog_detail_comments',
-            $app['myblog.controllers']->detail('blog_entry.add_comment')
-        )->bind ('blog_entry.detail_comments');
+        $controllers
+            ->get( '/blog/{id}/blog_detail_comments',
+                $blogController->detail(
+                    $postCommentUrl = 'blog_entry.add_comment',
+                    $postCommentUrlParams=['id'] ))
+            ->bind ('blog_entry.detail_comments');
 
-        $controllers->post( '/blog/{id}/add_comment',
-            $app['myblog.controllers']->postComment()
-        )->bind ('blog_entry.add_comment');
+        $controllers
+            ->post( '/blog/{id}/add_comment',
+                $blogController->postComment())
+            ->bind ('blog_entry.add_comment');
 
-        $controllers->get( '/formDemo',
-            $app['myblog.controllers']->formDemo()
-        )->bind ('form.demo');
+        $controllers
+            ->get( '/formDemo',
+                $blogController->formDemo())
+            ->bind ('form.demo');
 
         return $controllers;
     }
