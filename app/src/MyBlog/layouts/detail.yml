@@ -8,6 +8,7 @@ meta:
 structure:
   - import: Blog:/detail.yml
   - import: MyBlog:/base.yml
+  - import: Form:/register.yml
 
     # set templates and data
     body_content_right:
@@ -25,6 +26,13 @@ structure:
       import_form:
         as: form
         from: MyBlog:/comment.yml
+
+    # update assets
+    body_content:
+      require:
+        - jquery:2.x || 1.x
+        - js-normalizer:1.x
+        - form-helper:1.x
 
     # set all the meta, it is injected into url
     body_content:
